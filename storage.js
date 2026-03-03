@@ -23,6 +23,7 @@ export function loadFromLocal() {
             state.originalTextContent = projectData.originalText || ""; textContainer.innerHTML = projectData.currentHtml || "";
             state.cardsData = projectData.cards || []; state.colorIndex = projectData.colorIndex || 0;
             state.WPM = projectData.WPM || 130; state.fontSize = projectData.fontSize || 8;
+            state.textAlignment = projectData.textAlignment || 'center';
             renderSidebar();
             historyManager.pushHistory();
         } catch (e) { console.warn("No se pudo recuperar el autoguardado."); }
