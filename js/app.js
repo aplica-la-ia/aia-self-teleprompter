@@ -65,10 +65,36 @@ function updateSpeakerLabel(selected) {
     else { label.textContent = `${selected.length} hablantes seleccionados`; }
 }
 
+function populateSpeakerModal() {
+    const modalList = document.getElementById('speaker-modal-list');
+    if (!modalList) return;
+    modalList.innerHTML = '';
+
+    const speakers = state.presetSpeakers || [];
+    speakers.forEach(speaker => {
+        const isSelected = state.selectedSpeakers.includes(speaker.name);
+        const item = document.createElement('div');
+        item.style.cssText = 'padding:10px; border-bottom:1px solid #333; display:flex; align-items:center; gap:10px; cursor:pointer;';
+        item.innerHTML = `
+            <input type="checkbox" value="${speaker.name}" id="chk-${speaker.name}" ${isSelected ? 'checked' : ''} style="cursor:pointer;">
+            <label for="chk-${speaker.name}" style="cursor:pointer; flex:1;">${speaker.name}</label>
+        `;
+        item.onclick = (e) => {
+            if (e.target.tagName !== 'INPUT') {
+                const chk = item.querySelector('input');
+                chk.checked = !chk.checked;
+                chk.dispatchEvent(new Event('change', { bubbles: true }));
+            }
+        };
+        modalList.appendChild(item);
+    });
+}
+
 // --- LISTENERS DE LA MODAL DE HABLANTES ---
 
 // Abrir modal al hacer clic en el trigger
 document.getElementById('custom-speaker-select').addEventListener('click', () => {
+    populateSpeakerModal();
     document.getElementById('speaker-modal-overlay').style.display = 'flex';
 });
 
@@ -93,8 +119,15 @@ document.getElementById('speaker-modal-list').addEventListener('change', (e) => 
 
     state.selectedSpeakers = checked;
     updateSpeakerLabel(checked);
-    renderFullScript();
+
+    // Forzar renderizado total (Filtro por hablantes)
+    if (typeof renderFullScript === 'function') renderFullScript();
+    if (typeof renderSidebar === 'function') renderSidebar();
+    if (typeof renderPrompterText === 'function') renderPrompterText();
+
+    saveToLocal();
 });
+
 
 // --- EVENTOS DEL PANEL PRINCIPAL (SETUP) ---
 
@@ -483,6 +516,10 @@ window.addEventListener('beforeunload', (e) => {
 loadFromLocal();   // restaura preferencias de usuario (WPM, fontSize, alignment)
 
 // --- PWA FILE INGESTOR ---
+document.getElementById('btn-import-new').addEventListener('click', () => {
+    document.getElementById('json-upload-input').click();
+});
+
 document.getElementById('json-upload-input').addEventListener('change', function (e) {
     const file = e.target.files[0];
     if (!file) return;

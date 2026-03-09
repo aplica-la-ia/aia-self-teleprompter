@@ -64,7 +64,12 @@ export function renderSidebar() {
     }
 
     cardsList.innerHTML = '';
-    state.cardsData.forEach((card, i) => {
+    const filteredCards = state.cardsData.filter(card => {
+        if (!state.selectedSpeakers || state.selectedSpeakers.length === 0) return true;
+        return state.selectedSpeakers.some(s => card.metadata && card.metadata.includes(s));
+    });
+
+    filteredCards.forEach((card, i) => {
         const timeStr = calculateReadingTime(card.text) + "s";
         const cardDiv = document.createElement('div');
         cardDiv.className = 'card-item'; cardDiv.draggable = true; cardDiv.dataset.id = card.id;
