@@ -237,16 +237,19 @@ cardsList.addEventListener('input', (e) => {
     }
 });
 
-textContainer.addEventListener('mouseup', function () {
+document.getElementById('btn-create-card').addEventListener('click', function () {
     const selection = window.getSelection();
-    if (selection.isCollapsed) return;
+    if (selection.isCollapsed) {
+        alert("Primero selecciona el texto que quieras convertir en tarjeta.");
+        return;
+    }
     const selectedText = selection.toString().trim();
     if (selectedText.length === 0) return;
 
     const cardId = Date.now();
     const range = selection.getRangeAt(0);
 
-    // --- BLOQUEO DE COLISIONES (Exclusión Mutua) ---
+    // Lógica de validación de colisiones (Existente)
     const isInsideMark = (node) => {
         if (!node) return false;
         const element = node.nodeType === 3 ? node.parentNode : node;
@@ -254,56 +257,40 @@ textContainer.addEventListener('mouseup', function () {
     };
     const fragment = range.cloneContents();
     const containsMark = fragment.querySelector('mark.highlight') !== null;
-    const startInMark = isInsideMark(range.startContainer);
-    const endInMark = isInsideMark(range.endContainer);
-    if (containsMark || startInMark || endInMark) {
+    if (containsMark || isInsideMark(range.startContainer) || isInsideMark(range.endContainer)) {
         selection.removeAllRanges();
-        console.warn('Bloqueo de colisión: Violación de exclusión mutua en selección.');
+        alert('Este texto ya forma parte de una tarjeta.');
         return;
     }
 
-    // 1. Helper: DOM Traversal con closest() — compatible con la nueva estructura de scene-text-block
+    // Identificación de metadatos (Speaker/Escena)
     const getHeaderFromNode = (node) => {
         const element = node.nodeType === 3 ? node.parentNode : node;
-        const sceneBlock = element.closest('.scene-text-block');
-        if (sceneBlock) {
-            const header = sceneBlock.previousElementSibling;
-            if (header && header.getAttribute('contenteditable') === 'false') {
-                return header.innerText || header.textContent;
-            }
-        }
-        // Fallback robusto: buscar el último header disponible antes de este punto
         const allHeaders = Array.from(document.querySelectorAll('#text-container div[contenteditable="false"]'));
         for (let i = allHeaders.length - 1; i >= 0; i--) {
             if (allHeaders[i].compareDocumentPosition(element) & Node.DOCUMENT_POSITION_FOLLOWING) {
                 return allHeaders[i].innerText || allHeaders[i].textContent;
             }
         }
-        return allHeaders.length > 0 ? allHeaders[allHeaders.length - 1].innerText : 'TARJETA NUEVA • Sin Metadatos';
+        return 'TARJETA NUEVA';
     };
 
-    // 2. Escaneo de rango extendido (Origen y Destino)
-    let startMeta = getHeaderFromNode(range.startContainer);
-    let endMeta = getHeaderFromNode(range.endContainer);
-
-    // 3. Formateo de Salida
-    let metaText = startMeta;
-    if (startMeta && endMeta && startMeta.trim() !== endMeta.trim()) {
-        // Remover "TARJETA " del destino para ser más conciso (ej: "TARJETA #1 ... ➔ #2 ...")
-        let cleanEndMeta = endMeta.replace('TARJETA ', '').trim();
-        metaText = `${startMeta.trim()} ➔ ${cleanEndMeta}`;
-    } else if (!startMeta && endMeta) {
-        metaText = endMeta;
-    }
-
+    let metaText = getHeaderFromNode(range.startContainer);
     const markNode = document.createElement('mark');
-    markNode.className = `highlight c${state.colorIndex % 4}`; markNode.id = `mark-${cardId}`;
-    try { markNode.appendChild(range.extractContents()); range.insertNode(markNode); } catch (e) { console.warn("Selección cruzada"); }
+    markNode.className = `highlight c${state.colorIndex % 4}`;
+    markNode.id = `mark-${cardId}`;
+
+    try {
+        markNode.appendChild(range.extractContents());
+        range.insertNode(markNode);
+    } catch (e) { console.error("Error en inserción táctil"); }
 
     state.cardsData.push({ id: cardId, text: selectedText, metadata: metaText });
-    state.colorIndex++; selection.removeAllRanges();
+    state.colorIndex++;
+    selection.removeAllRanges();
 
-    renderSidebar(); saveToLocal();
+    renderSidebar();
+    saveToLocal();
     historyManager.pushHistory();
 });
 

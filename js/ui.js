@@ -28,7 +28,9 @@ export function updateGlobalStats() {
     const tSecsDoc = calculateReadingTime(fullText);
     const minDoc = Math.floor(tSecsDoc / 60); const secDoc = tSecsDoc % 60;
     const timeStrDoc = minDoc > 0 ? `${minDoc}m ${secDoc}s` : `${secDoc}s`;
-    statsHeader.textContent = `${fullText.length} car. | ~${timeStrDoc}`;
+    if (statsHeader) {
+        statsHeader.textContent = `${fullText.length} car. | ~${timeStrDoc}`;
+    }
 
     let totalCardsWords = 0; let totalCardsChars = 0;
     state.cardsData.forEach(card => { totalCardsChars += card.text.length; totalCardsWords += card.text.trim().split(/\s+/).length; });
