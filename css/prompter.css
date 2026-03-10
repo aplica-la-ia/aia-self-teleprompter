@@ -588,6 +588,13 @@ input[type="range"] {
     box-sizing: border-box;
 }
 
+.document-panel,
+.sidebar-panel {
+    min-width: 400px;
+    height: 100%;
+    overflow: hidden;
+}
+
 #text-container {
     height: 0 !important;
     overflow-y: auto !important;
