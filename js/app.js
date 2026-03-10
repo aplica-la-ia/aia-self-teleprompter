@@ -140,6 +140,7 @@ document.getElementById('speaker-modal-list').addEventListener('change', (e) => 
 
     state.selectedSpeakers = checked;
     triggerFullRender();
+    saveToLocal();
 });
 
 
@@ -553,7 +554,25 @@ document.addEventListener('click', (e) => {
 });
 
 // --- INICIALIZACIÓN ---
-loadFromLocal();   // restaura preferencias de usuario (WPM, fontSize, alignment)
+const hasSavedData = loadFromLocal();
+if (hasSavedData && state.scenes && state.scenes.length > 0) {
+    console.log("PWA: Restaurando sesión previa detectada...");
+
+    // 1. Ocultar pantalla de bienvenida
+    const bootScreen = document.getElementById('pwa-boot-screen');
+    if (bootScreen) bootScreen.style.display = 'none';
+
+    // 2. Disparar renderizado completo de la sesión recuperada
+    triggerFullRender();
+
+    // 3. Restaurar nombre del archivo si existe
+    if (state.lastFileName) {
+        const fileNameDisplay = document.getElementById('file-name-display');
+        if (fileNameDisplay) fileNameDisplay.textContent = state.lastFileName;
+    }
+} else {
+    console.log("PWA: No hay datos previos. Esperando carga de usuario.");
+}
 
 // --- PWA FILE INGESTOR ---
 document.getElementById('btn-import-new').addEventListener('click', () => {
@@ -571,6 +590,12 @@ document.getElementById('json-upload-input').addEventListener('change', function
             // 1. Cargar Escenas (Metadata de apoyo)
             const rawScenes = (importedData.project && importedData.project.scenes) ? importedData.project.scenes : (importedData.scenes || []);
             state.scenes = Array.isArray(rawScenes) ? rawScenes.map(s => s.scene_data || s) : [];
+            state.lastFileName = file.name;
+
+            // Limpieza de selección previa según requerimiento
+            state.selectedSpeakers = [];
+            state.cardsData = [];
+            saveToLocal();
 
             // 2. CARGAR TARJETAS (Estructura real del prompter)
             // Priorizamos el array 'cards' que viene en la raíz del JSON
