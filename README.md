@@ -7,16 +7,7 @@
 - **Modo Offline**: Una vez instalada como PWA, funciona totalmente sin conexión a internet.
 - **Segmentación Inteligente**: Convierte selecciones de texto en tarjetas de lectura individuales de forma táctil.
 - **Control Gestual**: Navegación fluida mediante deslizamiento (Swipe) y zoom con dos dedos (Pinch-to-Zoom).
-<<<<<<< HEAD
-- **Privacidad Local**: Los guiones y ediciones se guardan exclusivamente en el almacenamiento local del dispositivo.
-
-## 👤 Autoría y Créditos
-Este proyecto ha sido desarrollado por **Pedro Pablo Miras**, integrante del equipo de **Aplica la IA**. 
-
-Visítanos:👉 **Canal de YouTube**: [Aplica la IA](https://www.youtube.com/@Aplica_la_IA)
-=======
 - **Privacidad Local**: Los guiones y ediciones se guardan exclusivamente en el almacenamiento local del dispositivo (IndexedDB).
->>>>>>> cf2431d (docs: update README with AI-native disclosure and org links)
 
 ## 🚀 Instalación
 1. Accede a la URL de GitHub Pages desde tu tablet o móvil: [🔗 https://aplica-la-ia.github.io/aia-self-teleprompter/](https://aplica-la-ia.github.io/aia-self-teleprompter/)
@@ -24,9 +15,6 @@ Visítanos:👉 **Canal de YouTube**: [Aplica la IA](https://www.youtube.com/@Ap
 3. **Android (Chrome)**: Toca los tres puntos y selecciona "Instalar aplicación" o "Añadir a la pantalla de inicio".
 
 ---
-<<<<<<< HEAD
-*Impulsando la creación de contenido con inteligencia.*
-=======
 
 ### 🤖 AI-Native Development & Methodology
 Este software implementa una arquitectura de **Progressive Web App** construida íntegramente mediante **Vibecoding** y desarrollo asistido por IA.
@@ -37,4 +25,3 @@ Este software implementa una arquitectura de **Progressive Web App** construida 
 
 ---
 *Impulsando la creación de contenido con inteligencia.*
->>>>>>> cf2431d (docs: update README with AI-native disclosure and org links)
