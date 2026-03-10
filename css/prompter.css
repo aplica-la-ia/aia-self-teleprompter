@@ -569,7 +569,10 @@ input[type="range"] {
 }
 
 /* --- Parche Visual: Foco Accesible --- */
-*:focus { outline: none !important; }
+*:focus {
+    outline: none !important;
+}
+
 *:focus-visible {
     outline: 2px solid var(--accent-color) !important;
     outline-offset: 2px;
@@ -584,19 +587,47 @@ input[type="range"] {
     overflow: hidden !important;
     box-sizing: border-box;
 }
+
 #text-container {
     height: 0 !important;
     overflow-y: auto !important;
     padding-bottom: 60px !important;
     box-sizing: border-box !important;
 }
-#text-container .scene-text-block, #text-container mark { line-height: 2.2 !important; }
-#text-container mark { padding: 2px 0; }
-::-webkit-scrollbar { width: 10px; height: 10px; }
-::-webkit-scrollbar-track { background: #121212; border-left: 1px solid #222; }
-::-webkit-scrollbar-thumb { background: #333; border-radius: 5px; }
-::-webkit-scrollbar-thumb:hover { background: #555; }
-* { scrollbar-width: thin; scrollbar-color: #333 #121212; }
+
+#text-container .scene-text-block,
+#text-container mark {
+    line-height: 2.2 !important;
+}
+
+#text-container mark {
+    padding: 2px 0;
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: #121212;
+    border-left: 1px solid #222;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #333;
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+* {
+    scrollbar-width: thin;
+    scrollbar-color: #333 #121212;
+}
+
 #cards-list {
     flex: 1 1 auto !important;
     min-height: 0 !important;
@@ -606,45 +637,66 @@ input[type="range"] {
     padding-bottom: 60px !important;
     box-sizing: border-box !important;
 }
-.card-item:focus-within .focus-indicator { opacity: 1 !important; }
+
+.card-item:focus-within .focus-indicator {
+    opacity: 1 !important;
+}
 
 /* --- FASE 1 & 2: LAYOUT MÓVIL/TABLET Y ERGONOMÍA (< 1024px) --- */
 @media (max-width: 1024px) {
+
     /* Destrucción del Grid de Escritorio */
     #setup-view {
         display: flex !important;
         flex-direction: column !important;
-        padding-bottom: 60px !important; /* Espacio para el nav inferior */
+        padding-bottom: 60px !important;
+        /* Espacio para el nav inferior */
     }
-    
-    /* Configuración de Paneles 100% alternos */
-    .document-panel, .sidebar-panel {
+
+    /* Configuración de Paneles 100% alternos con Contención de Scroll */
+    .document-panel,
+    .sidebar-panel {
         min-width: 100%;
         width: 100%;
         border-right: none;
         padding: 15px;
         box-sizing: border-box;
-        display: none; /* Ocultos por defecto, controlados por JS/Clases */
+        display: none;
+        /* Ocultos por defecto, controlados por JS/Clases */
+        flex: 1;
+        height: 100%;
+        overflow: hidden;
     }
-    
+
     /* Estado activo del panel */
-    .document-panel.active, .sidebar-panel.active {
+    .document-panel.active,
+    .sidebar-panel.active {
         display: flex;
     }
 
     /* Fallback temporal si JS no ha inyectado la clase active */
-    .document-panel:not(.active):not(.inactive) { display: flex; }
-    .sidebar-panel:not(.active):not(.inactive) { display: none; }
+    .document-panel:not(.active):not(.inactive) {
+        display: flex;
+    }
+
+    .sidebar-panel:not(.active):not(.inactive) {
+        display: none;
+    }
 
     /* Ergonomía: Áreas de clic aumentadas a 48px */
-    .icon-btn, .btn-custom-file, .btn-delete, #btn-start {
+    .icon-btn,
+    .btn-custom-file,
+    .btn-delete,
+    #btn-start {
         min-height: 48px;
         min-width: 48px;
     }
-    
+
     /* Ocultación del logo visual para ahorrar espacio */
-    .logo-link img { display: none; }
-    
+    .logo-link img {
+        display: none;
+    }
+
     /* Activación y Estilos de la Barra de Navegación Inferior */
     #mobile-tabs-nav {
         display: flex !important;
@@ -657,6 +709,7 @@ input[type="range"] {
         border-top: 1px solid var(--border-color);
         z-index: 1000;
     }
+
     .mobile-tab-btn {
         flex: 1;
         background: transparent;
@@ -671,6 +724,7 @@ input[type="range"] {
         gap: 8px;
         transition: color 0.2s, background 0.2s;
     }
+
     .mobile-tab-btn.active {
         color: var(--accent-color);
         background: rgba(98, 0, 234, 0.1);
