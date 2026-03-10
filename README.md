@@ -12,8 +12,7 @@
 ## 👤 Autoría y Créditos
 Este proyecto ha sido desarrollado por **Pedro Pablo Miras**, integrante del equipo de **Aplica la IA**. 
 
-Si quieres aprender más sobre automatización, IA y herramientas de productividad, visítanos:
-👉 **Canal de YouTube**: [Aplica la IA](https://www.youtube.com/@Aplica_la_IA)
+Visítanos:👉 **Canal de YouTube**: [Aplica la IA](https://www.youtube.com/@Aplica_la_IA)
 
 ## 🚀 Instalación
 1. Accede a la URL de GitHub Pages desde tu tablet o móvil. [🔗](https://pedropablo-dev.github.io/AIA-Self-Teleprompter/)
